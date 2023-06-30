@@ -1,0 +1,70 @@
+using System;
+using System.Numerics;
+
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите два простых числа p и q:");
+        int p = Convert.ToInt32(Console.ReadLine());
+        int q = Convert.ToInt32(Console.ReadLine());
+
+        int n = p * q;
+        Console.WriteLine("Модуль n: " + n);
+
+        int phi = (p - 1) * (q - 1);
+        Console.WriteLine("Функция Эйлера phi(n): " + phi);
+
+        Console.WriteLine("Введите открытую экспоненту e, которая является взаимно простой с phi(n):");
+        int e = Convert.ToInt32(Console.ReadLine());
+
+        int d = ModInverse(e, phi);
+        Console.WriteLine("Секретная экспонента d: " + d);
+
+        Console.WriteLine("Введите сообщение для шифрования:");
+        int message = Convert.ToInt32(Console.ReadLine());
+
+        BigInteger encryptedMessage = Encrypt(message, e, n);
+        Console.WriteLine("Зашифрованное сообщение: " + encryptedMessage);
+
+        BigInteger decryptedMessage = Decrypt(encryptedMessage, d, n);
+        Console.WriteLine("Расшифрованное сообщение: " + decryptedMessage);
+    }
+
+    static int ModInverse(int a, int m)
+    {
+        int originalM = m;
+        int y = 0, x = 1;
+
+        if (m == 1)
+            return 0;
+
+        while (a > 1)
+        {
+            int q = a / m;
+            int t = m;
+            m = a % m;
+            a = t;
+            t = y;
+            y = x - q * y;
+            x = t;
+        }
+
+        if (x < 0)
+            x += originalM;
+
+        return x;
+    }
+
+    static BigInteger Encrypt(int message, int e, int n)
+    {
+        BigInteger result = BigInteger.ModPow(message, e, n);
+        return result;
+    }
+
+    static BigInteger Decrypt(BigInteger encryptedMessage, int d, int n)
+    {
+        BigInteger result = BigInteger.ModPow(encryptedMessage, d, n);
+        return result;
+    }
+}
