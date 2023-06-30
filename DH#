@@ -1,0 +1,44 @@
+using System;
+using System.Numerics;
+
+class DiffieHellman
+{
+    static void Main()
+    {
+        Console.Write("Введите простое число p: ");
+        BigInteger p = BigInteger.Parse(Console.ReadLine());
+
+        Console.Write("Введите число g (<p): ");
+        BigInteger g = BigInteger.Parse(Console.ReadLine());
+
+        Console.Write("Введите секретное число a: ");
+        BigInteger a = BigInteger.Parse(Console.ReadLine());
+
+        Console.Write("Введите секретное число b: ");
+        BigInteger b = BigInteger.Parse(Console.ReadLine());
+
+        BigInteger A = BigInteger.ModPow(g, a, p);
+        BigInteger B = BigInteger.ModPow(g, b, p);
+
+        Console.WriteLine("Открытый ключ А: " + A);
+        Console.WriteLine("Открытый ключ B: " + B);
+
+        BigInteger secretKeyA = BigInteger.ModPow(B, a, p);
+        BigInteger secretKeyB = BigInteger.ModPow(A, b, p);
+
+        Console.WriteLine("Секретный ключ A: " + secretKeyA);
+        Console.WriteLine("Секретный ключ B: " + secretKeyB);
+
+        if (secretKeyA == secretKeyB)
+        {
+            Console.WriteLine("Секретные ключи совпадают");
+            Console.WriteLine("Разделяемый секретный ключ: " + secretKeyA);
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: Секретные ключи не совпадают!");
+        }
+
+        Console.ReadLine();
+    }
+}
